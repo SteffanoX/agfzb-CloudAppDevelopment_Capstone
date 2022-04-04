@@ -13,55 +13,40 @@
     <body>
 
         <!-- Start Nav Bar -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" role="navigation">
-            <div class="container">
-                <a class="navbar-brand" href="{% url 'djangoapp:index' %}">Car Dealerships</a>
-                <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#exCollapsingNavbar">
-                    &#9776;
-                </button>
-                <div class="collapse navbar-collapse" id="exCollapsingNavbar">
-                    <ul class="nav navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'djangoapp:about' %}">About us</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'djangoapp:contact' %}">Contact us</a>
-                        </li>
-                    </ul>
-                    <ul class="nav navbar-nav flex-row justify-content-between ml-auto">
-                        {% if user.is_authenticated %}
-                        <li class="ml-auto">
-                            <a class="btn btn-link" href="#">{{ user.first_name }}({{ user.username }})</a>
-                            <a class="btn btn-link" href="#">Logout</a>
-                        </li>
-                        {% else %}
-                        <li class="dropdown order-1">
-                            <button type="button" id="dropdownMenu1" data-toggle="dropdown" class="btn btn-outline-secondary dropdown-toggle">Login <span class="caret"></span></button>
-                            <ul class="dropdown-menu dropdown-menu-right mt-1">
-                              <li class="p-3">
-                                    <form class="form" role="form">
-                                        <div class="form-group">
-                                            <input id="emailInput" placeholder="Email" class="form-control form-control-sm" type="text" required="">
-                                        </div>
-                                        <div class="form-group">
-                                            <input id="passwordInput" placeholder="Password" class="form-control form-control-sm" type="text" required="">
-                                        </div>
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-primary btn-block">Login</button>
-                                        </div>
-                                        <div class="form-group text-xs-center">
-                                            <small><a href="#">Forgot password?</a></small>
-                                            <small><a href="#">Sign Up</a></small>
-                                        </div>
-                                    </form>
-                                </li>
-                            </ul>
-                        </li>
-                        {% endif %}
-                    </ul>
-                </div>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="{% url 'djangoapp:index' %}">Car Dealerships</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+              <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'djangoapp:about' %}">About us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'djangoapp:contact' %}">Contact us</a>
+                </li>
+              </ul>
+              {% if user.is_authenticated %}
+                <li class="ml-auto">
+                    <a class="btn btn-link" href="#">{{ user.first_name }}({{ user.username }})</a>
+                    <a class="btn btn-link" href="#">Logout</a>
+                </li>
+                {% else %}
+                <form class="form-inline" action="#" method="post">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Username" name="username" >
+                        <input type="password" class="form-control" placeholder="Password" name="psw" >
+                        <button class="btn btn-primary" type="submit">Login</button>
+                        <a class="btn btn-link" href="#">Sign Up</a>
+                    </div>
+                </form>
+                {% endif %}
             </div>
-        </nav>
+          </nav>
+        
 <!-- End Nav Bar -->
 
         <h1>
