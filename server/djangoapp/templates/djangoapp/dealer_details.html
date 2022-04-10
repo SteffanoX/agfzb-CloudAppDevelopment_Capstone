@@ -3,16 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <title>Dealership Review</title>
-    {% load static %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link href="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
 </head>
 
     <body>
 
-    <!--Add a nav bar here -->
+    <!-- Start Nav Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="{% url 'djangoapp:index' %}">Car Dealerships</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'djangoapp:about' %}">About us</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'djangoapp:contact' %}">Contact us</a>
+            </li>
+          </ul>
+          {% if user.is_authenticated %}
+            <li class="ml-auto">
+                <a class="btn btn-link" href="#">{{ user.first_name }}({{ user.username }})</a>
+                <a class="btn btn-link" href="{% url 'djangoapp:logout' %}">Logout</a>
+            </li>
+            {% else %}
+            <form class="form-inline" action="{% url 'djangoapp:login' %}" method="post">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Username" name="username" >
+                    <input type="password" class="form-control" placeholder="Password" name="psw" >
+                    <button class="btn btn-primary" type="submit">Login</button>
+                    <a class="btn btn-link" href="{% url 'djangoapp:registration' %}">Sign Up</a>
+                </div>
+            </form>
+            {% endif %}
+        </div>
+      </nav>
+    
+<!-- End Nav Bar -->
 
     <!-- Add reviews as cards -->
+    <div class="container" style="padding: 10px;">
+    <h2>Reviews for {{dealership_name}} </h2>
+    {% if user.is_authenticated %}
+    <a class="btn btn-link" href="{% url 'djangoapp:add_review' dealer_id dealership_name%}">Add Review</a>
+    {% endif %}
+    </div>
+    <div class="container" style="padding-top: 10px;">
+      <div class="card-columns">
+        {% for review in reviews %}
+        <div class="card">
+            {% if review.sentiment == 'neutral' %}
+            <img class="card-img-left" src="{{MEDIA_URL}}/emoji/neutral.png" alt="Card image cap">
+            {% elif review.sentiment == 'negative' %}
+            <img class="card-img-left" src="{{MEDIA_URL}}/emoji/negative.png" alt="Card image cap">
+            {% elif review.sentiment == 'positive' %}
+            <img class="card-img-left" src="{{MEDIA_URL}}/emoji/positive.png" alt="Card image cap">
+            {% endif %}
+            <div class="card-body">
+              {% if review.car_model == 'nil' %}
+              <h5>No Purchase made</h5>
+              {% else %}
+              <h5 class="card-title">{{ review.car_model }}, {{ review.car_make }}, {{ review.car_year }}</h5>
+              {% endif %}
+              <p class="card-text">{{ review.review }}</p>
+            </div>
+            {% if review.purchase_date != 'nil' %}
+            <div class="card-footer">
+              <small class="text-muted">Purchased on: {{ review.purchase_date }}</small>
+            </div>
+            {% else %}
+            {% endif %}
+          </div>
+        {% endfor %}
 
+      </div>
+    </div>
     </body>
-
 </html>

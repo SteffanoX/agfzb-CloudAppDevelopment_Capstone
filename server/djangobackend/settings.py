@@ -29,7 +29,8 @@ APPEND_SLASH = True
 
 ALLOWED_HOSTS = [
     "localhost",
-    "steff23FSC.mybluemix.net"
+    "steff23FSC.mybluemix.net",
+    "127.0.0.1"
     ]
 
 
